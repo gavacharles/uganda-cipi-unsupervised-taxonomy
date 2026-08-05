@@ -1,0 +1,4 @@
+comparison,adjusted_rand
+kmeans_vs_kmedoids,0.6444836880750999
+kmeans_vs_ward,0.80875
+kmedoids_vs_ward,0.52524682651622
