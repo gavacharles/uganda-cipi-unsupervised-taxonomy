@@ -1,37 +1,28 @@
-# Paper 3 — Unsupervised Taxonomy of CIPI Dynamics (Independent Build)
+# uganda-cipi-unsupervised-taxonomy
 
-This folder is a standalone paper workspace built from the CIO pipeline outputs, without modifying the main pipeline code.
+Python code, outputs and manuscript for an unsupervised machine-learning taxonomy of Uganda's construction input price dynamics, compared with administrative trade classifications.
 
-## Scope
-- Data source: `cio_pipeline-2/data/processed/panel_v1.0.parquet`
-- Frequency: monthly
-- Realized sample in panel: 2017-07 to 2026-04
-- Materials used: disaggregated CIPI block only (18 sub-indices)
+## Data
 
-## Reproducible workflow
-1. Run analysis:
-   - `"/Users/charlesgava/Documents/Projects /Paper 3- Unsupervised Taxonomy/cio_pipeline-2/.venv/bin/python" src/run_taxonomy.py`
-2. Run synthetic DBA test:
-   - `"/Users/charlesgava/Documents/Projects /Paper 3- Unsupervised Taxonomy/cio_pipeline-2/.venv/bin/python" -m pytest -q`
+Input is `data/processed/panel_v1.0.parquet` from [cio_pipeline-2](https://github.com/gavacharles/cio_pipeline-2): monthly, 2017-07 to 2026-04, the 18 disaggregated CIPI sub-indices.
 
-## What is generated
-- `outputs/manifest.json` — main run metadata + headline metrics
-- `outputs/tables/k_selection_grid.csv` — silhouette + gap for k/radius/normalization sweep
-- `outputs/tables/taxonomy_divergence_by_normalization.csv` — ARI vs trade and ISIC proxies
-- `outputs/tables/clusters_with_trade_mapping.csv` — empirical taxonomy table
-- `outputs/tables/cluster_migration.csv` — temporal stability migration output
-- `outputs/tables/estimator_agreement.csv` — triangulation agreement (k-means/k-medoids/Ward)
-- `outputs/figures/cluster_heatmap.png` — co-movement heatmap
-- `outputs/figures/tsne_manifold.png` — main manifold figure
-- `outputs/figures/centroid_profiles.png` — cluster centroid profiles
-- `outputs/figures/tsne_umap_appendix.png` — t-SNE/UMAP robustness figure
+## Contents
 
-## Methods implemented
-- Distance: DTW with Sakoe-Chiba radius sweep (`3, 6, 12`)
-- Clustering: DTW-DBA `TimeSeriesKMeans`; robustness via PAM k-medoids and Ward-on-MDS(DTW)
-- Selection: joint silhouette and gap statistic sweep
-- Normalization sensitivity: returns z-score, levels z-score, detrended levels z-score
-- Stability: first-half vs second-half clustering with label remapping and migration table
+| Path | What it is |
+|---|---|
+| `src/run_taxonomy.py` | Full analysis: DTW distances, DTW-DBA k-means, k-medoids and Ward robustness, k selection, normalisation sensitivity, temporal stability |
+| `src/trade_mapping.csv` | Administrative benchmark (trade group and ISIC proxy) used for ARI comparisons |
+| `tests/test_dba_convergence.py` | Synthetic DBA convergence test |
+| `outputs/manifest.json` | Run metadata and summary metrics |
+| `outputs/tables/` | k-selection grid, divergence by normalisation, cluster table, migration table, estimator agreement |
+| `outputs/figures/` | Heatmap, manifold, centroid profiles, robustness and stability figures |
+| `manuscript/paper.md` | Manuscript draft |
 
-## Note on classification benchmark
-`src/trade_mapping.csv` provides the administrative benchmark used for ARI checks (`trade_group` and `isic_proxy`) so the taxonomy divergence can be quantified consistently.
+## Running
+
+Use an environment with the cio_pipeline-2 dependencies installed and the panel available:
+
+```
+python src/run_taxonomy.py
+python -m pytest -q
+```
