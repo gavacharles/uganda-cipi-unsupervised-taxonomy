@@ -16,7 +16,6 @@ Input is `data/processed/panel_v1.0.parquet` from [cio_pipeline-2](https://githu
 | `outputs/manifest.json` | Run metadata and summary metrics |
 | `outputs/tables/` | k-selection grid, divergence by normalisation, cluster table, migration table, estimator agreement |
 | `outputs/figures/` | Heatmap, manifold, centroid profiles, robustness and stability figures |
-| `manuscript/paper.md` | Manuscript draft |
 
 ## Running
 
